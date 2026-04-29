@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vyzivne.cz | Klidná kalkulačka výživného</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="brand-header" aria-label="Název aplikace">
+        <svg class="brand-logo" viewBox="0 0 64 64" aria-hidden="true">
+          <defs>
+            <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7DAEA4"></stop>
+              <stop offset="100%" stop-color="#6F89A8"></stop>
+            </linearGradient>
+          </defs>
+          <rect x="6" y="6" width="52" height="52" rx="14" fill="url(#brandGradient)"></rect>
+          <path d="M20 24L32 40L44 24" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <div class="brand-text">
+          <strong>VYZIVNE.CZ</strong>
+          <span>Klidná orientační kalkulačka výživného</span>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Pro rodiče v Česku</p>
+          <h1>Rychlý odhad výživného pro vaše ratolesti</h1>
+          <p class="lead">Za 2-3 minuty získáte orientační částku i jasný směr platby. Výpočet běží průběžně podle příjmů, věku dětí a rozdělení péče během roku.</p>
+        </div>
+        <div class="result-hero" aria-live="polite">
+          <span id="resultContext">Při zadaných údajích vychází</span>
+          <strong id="mainAmount">0 Kč</strong>
+          <p id="mainVerdict">Vyplňte příjmy a ratolesti. Výsledek se dopočítá automaticky.</p>
+        </div>
+      </section>
+
+      <section class="onboarding-card" aria-labelledby="onboardingTitle">
+        <div class="section-head">
+          <p class="eyebrow">Rychlý start</p>
+          <h2 id="onboardingTitle">Nejdřív jen pár základů</h2>
+          <p>Vyberte, z jakého pohledu chcete výpočet číst, a přidejte ratolesti jménem. Když člověk vidí jména, výpočet je hned méně anonymní.</p>
+        </div>
+
+        <div class="start-grid">
+          <div>
+            <label class="field-label">Jste maminka nebo tatínek?</label>
+            <div class="role-grid compact" role="radiogroup" aria-label="Jste maminka nebo tatínek">
+              <label class="role-choice">
+                <input type="radio" name="userRole" value="mother" checked>
+                <span>Jsem maminka</span>
+              </label>
+              <label class="role-choice">
+                <input type="radio" name="userRole" value="father">
+                <span>Jsem tatínek</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="child-add">
+            <label class="field-label" for="childNameInput">Přidejte ratolest</label>
+            <div class="add-row">
+              <input id="childNameInput" type="text" name="childQuickName" list="czechNameOptions" autocomplete="name" spellcheck="false" placeholder="Začněte psát jméno" maxlength="32">
+              <input id="childAgeInput" type="number" name="childQuickAge" min="0" max="26" placeholder="Věk" inputmode="numeric">
+              <button id="addChildBtn" type="button">Přidat</button>
+            </div>
+            <datalist id="czechNameOptions"></datalist>
+            <p class="microcopy">Našeptávání používá česká kalendářní jména. Přidat můžete až 3 ratolesti.</p>
+            <div id="childTagList" class="child-tags" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="momentum-card" aria-labelledby="momentumTitle">
+        <div class="momentum-copy">
+          <p class="eyebrow">Přehled</p>
+          <h2 id="momentumTitle">Jak úplný je váš odhad</h2>
+          <p id="boostMessage">Začněte základními údaji. Každý doplněný krok pomáhá udělat výsledek srozumitelnější.</p>
+        </div>
+        <div class="score-ring" aria-label="Míra vyplnění">
+          <span id="clarityScore">0 %</span>
+        </div>
+        <div class="quest-list" aria-label="Doplněné části">
+          <div class="quest-item" data-quest="role"><span></span>Role rodiče</div>
+          <div class="quest-item" data-quest="income"><span></span>Příjmy</div>
+          <div class="quest-item" data-quest="children"><span></span>Ratolesti</div>
+          <div class="quest-item" data-quest="care"><span></span>Péče</div>
+        </div>
+      </section>
+
+      <section class="quick-card" aria-labelledby="startTitle">
+        <div class="section-head">
+          <p class="eyebrow">Začněte tady</p>
+          <h2 id="startTitle">Příjmy obou rodičů</h2>
+        </div>
+
+        <div class="money-grid">
+          <label class="money-field">
+            Váš čistý měsíční příjem
+            <div class="money-input">
+              <input id="myIncome" type="number" name="myIncome" min="0" max="500000" step="500" value="38000" inputmode="numeric" autocomplete="off" placeholder="38000">
+              <span>Kč / měsíc</span>
+            </div>
+            <small class="hint">Čistý příjem po odvodech.</small>
+          </label>
+          <label class="money-field">
+            Čistý měsíční příjem druhého rodiče
+            <div class="money-input">
+              <input id="otherIncome" type="number" name="otherIncome" min="0" max="500000" step="500" value="56000" inputmode="numeric" autocomplete="off" placeholder="56000">
+              <span>Kč / měsíc</span>
+            </div>
+            <small class="hint">Když přesně nevíte, zadejte realistický odhad.</small>
+          </label>
+        </div>
+      </section>
+
+      <section class="dashboard">
+        <article class="quick-card children-panel">
+          <div class="section-head inline">
+            <div>
+              <p class="eyebrow">Ratolesti</p>
+              <h2>Jména a věk</h2>
+            </div>
+          </div>
+          <div id="childrenWrap" class="children-list"></div>
+        </article>
+
+        <aside class="quick-card care-panel">
+          <div class="section-head">
+            <p class="eyebrow">Péče</p>
+            <h2>Kolik dní jsou ratolesti u vás?</h2>
+            <p>Teď počítáme s rychlým nastavením. Detailní režim přes školní rok a prázdniny nastavíte ve wizardu.</p>
+          </div>
+
+          <div class="quick-presets" aria-label="Rychlá volba péče">
+            <button type="button" class="preset-chip is-active" data-care-preset="shared">Půl na půl</button>
+            <button type="button" class="preset-chip" data-care-preset="mostlyMe">Většinou u mě</button>
+            <button type="button" class="preset-chip" data-care-preset="mostlyOther">Většinou u druhého</button>
+          </div>
+
+          <div class="care-summary">
+            <div>
+              <small id="myCareLabel">Vy</small>
+              <strong id="myCareDays">0 dní</strong>
+              <span id="myCarePercent">0 % roku</span>
+            </div>
+            <div>
+              <small id="otherCareLabel">Druhý rodič</small>
+              <strong id="otherCareDays">0 dní</strong>
+              <span id="otherCarePercent">0 % roku</span>
+            </div>
+          </div>
+
+          <div class="care-bar" aria-hidden="true">
+            <div id="myCareFill"></div>
+          </div>
+
+          <button id="openWizard" type="button" class="wide">Nastavit péči a prázdniny</button>
+        </aside>
+      </section>
+
+      <section class="quick-card results-panel">
+        <div class="section-head inline">
+          <div>
+            <p class="eyebrow">Výsledek</p>
+            <h2 id="resultTitle">Co by mělo chodit na ratolesti</h2>
+          </div>
+          <button id="resetDemo" type="button" class="ghost">Vrátit ukázková data</button>
+        </div>
+
+        <div id="paymentSummary" class="money-story"></div>
+
+        <div id="childResults" class="child-results"></div>
+
+        <p class="legal-note">Výpočet je orientační a vychází z veřejné kalkulačky Ministerstva spravedlnosti. Soud může zohlednit další okolnosti: konkrétní potřeby dětí, majetek, bydlení, zdravotní výdaje, školu nebo další vyživovací povinnosti.</p>
+      </section>
+    </main>
+
+    <div id="wizardOverlay" class="modal-overlay" hidden>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="wizardTitle">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Detail péče</p>
+            <h2 id="wizardTitle">Nastavení péče a prázdnin</h2>
+          </div>
+          <button id="closeWizard" type="button" class="icon-button" aria-label="Zavřít">×</button>
+        </div>
+
+        <div class="modal-steps" aria-label="Kroky detailního nastavení">
+          <button class="step-dot is-active" type="button" data-wizard-step="0">1</button>
+          <button class="step-dot" type="button" data-wizard-step="1">2</button>
+          <button class="step-dot" type="button" data-wizard-step="2">3</button>
+        </div>
+
+        <form id="careForm">
+          <section class="wizard-step is-active" data-step="0">
+            <h3>Jaký je běžný režim přes školní rok?</h3>
+            <div class="two-col">
+              <label>
+                Typ péče
+                <select id="careType">
+                  <option value="shared">Společná nebo střídavá péče</option>
+                  <option value="mostlyMe">Převážná nebo výlučná péče u mě</option>
+                  <option value="mostlyOther">Převážná nebo výlučná péče u druhého rodiče</option>
+                </select>
+              </label>
+              <label>
+                Rok výpočtu
+                <input id="calcYear" type="number" min="2024" max="2035" value="2026">
+              </label>
+            </div>
+            <div class="slider-card">
+              <label for="regularDaysMe">Běžný režim: dní u vás ve 14denním cyklu</label>
+              <input id="regularDaysMe" type="range" min="0" max="14" step="0.5" value="7">
+              <output id="regularDaysLabel">7 dní u vás / 7 dní u druhého rodiče</output>
+            </div>
+          </section>
+
+          <section class="wizard-step" data-step="1">
+            <h3>Jak si dělíte prázdniny?</h3>
+            <p class="subtle">Zadejte, kolik dní z daného období jsou ratolesti u vás. Zbytek se započte druhému rodiči.</p>
+            <div id="holidayWrap" class="holiday-list"></div>
+          </section>
+
+          <section class="wizard-step" data-step="2">
+            <h3>Kontrola péče</h3>
+            <div class="modal-review">
+              <div>
+                <small id="reviewMeLabel">Vy</small>
+                <strong id="reviewMeDays">0 dní</strong>
+                <span id="reviewMePercent">0 %</span>
+              </div>
+              <div>
+                <small id="reviewOtherLabel">Druhý rodič</small>
+                <strong id="reviewOtherDays">0 dní</strong>
+                <span id="reviewOtherPercent">0 %</span>
+              </div>
+            </div>
+            <p class="subtle">Po uložení se hlavní odhad okamžitě přepočítá.</p>
+          </section>
+
+          <div class="modal-actions">
+            <button id="wizardPrev" type="button" class="ghost">Zpět</button>
+            <button id="wizardNext" type="button">Pokračovat</button>
+            <button id="wizardSave" type="submit">Uložit a přepočítat</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div id="boostToast" class="boost-toast" role="status" aria-live="polite" hidden>
+      <strong id="boostTitle">Hotovo</strong>
+      <span id="boostText">Výsledek je zase o něco jasnější.</span>
+    </div>
+    <div id="confettiLayer" class="confetti-layer" aria-hidden="true"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
