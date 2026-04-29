@@ -93,6 +93,9 @@ function renderChildren() {
   }
 
   appState.children.forEach((child, index) => {
+    const shared = child.shared !== false;
+    const owner = child.owner === "other" ? "other" : "me";
+    const roles = roleInfo();
     const rowTitle = child.name?.trim() ? child.name.trim() : `Ratolest ${index + 1}`;
     const row = document.createElement("div");
     row.className = "child-row";
@@ -105,6 +108,19 @@ function renderChildren() {
         Věk
         <input class="child-age" data-child-index="${index}" type="number" name="childAge${index}" min="0" max="26" value="${escapeHtml(child.age)}">
       </label>
+      <div class="child-meta">
+        <label class="inline-check">
+          <input class="child-shared" data-child-index="${index}" type="checkbox" ${shared ? "checked" : ""}>
+          <span>Společná ratolest obou rodičů</span>
+        </label>
+        <label class="child-owner-field" ${shared ? "hidden" : ""}>
+          Patří pouze
+          <select class="child-owner" data-child-index="${index}">
+            <option value="me" ${owner === "me" ? "selected" : ""}>${roles.myRole}</option>
+            <option value="other" ${owner === "other" ? "selected" : ""}>${roles.otherRole}</option>
+          </select>
+        </label>
+      </div>
     `;
     $("#childrenWrap").appendChild(row);
   });
@@ -115,7 +131,9 @@ function renderChildren() {
 function children() {
   return appState.children.map((child, index) => ({
     name: child.name.trim() || `Ratolest ${index + 1}`,
-    age: clamp(Number(child.age) || 0, 0, 26)
+    age: clamp(Number(child.age) || 0, 0, 26),
+    shared: child.shared !== false,
+    owner: child.owner === "other" ? "other" : "me"
   }));
 }
 
@@ -144,12 +162,18 @@ async function loadNameSuggestions() {
 }
 
 function renderChildTags() {
+  const roles = roleInfo();
   $("#childTagList").innerHTML = appState.children.map((child, index) => `
     <span class="child-tag">
-      ${escapeHtml(child.name)}${child.age ? `, ${escapeHtml(child.age)} let` : ""}
+      ${escapeHtml(child.name)}${child.age ? `, ${escapeHtml(child.age)} let` : ""} • ${child.shared !== false ? "společná" : `jen ${child.owner === "other" ? roles.otherRole : roles.myRole}`}
       <button type="button" aria-label="Odebrat ${escapeHtml(child.name)}" data-remove-child="${index}">×</button>
     </span>
   `).join("");
+}
+
+function updateQuickChildOwnerVisibility() {
+  const shared = $("#childIsSharedInput").checked;
+  $("#childOwnerWrap").hidden = shared;
 }
 
 function addChildFromQuickStart() {
@@ -157,6 +181,8 @@ function addChildFromQuickStart() {
   const ageInput = $("#childAgeInput");
   const name = normalizeChildName(nameInput.value);
   const age = Number(ageInput.value);
+  const shared = $("#childIsSharedInput").checked;
+  const owner = $("#childOwnerInput").value === "other" ? "other" : "me";
 
   if (!name || !Number.isFinite(age) || age < 0) {
     showBoost("Doplňte jméno a věk", "Aby výpočet dával smysl, potřebujeme u ratolesti jméno i věk.");
@@ -171,9 +197,11 @@ function addChildFromQuickStart() {
     return;
   }
 
-  appState.children.push({ name, age: clamp(age, 0, 26) });
+  appState.children.push({ name, age: clamp(age, 0, 26), shared, owner });
   nameInput.value = "";
   ageInput.value = "";
+  $("#childIsSharedInput").checked = true;
+  updateQuickChildOwnerVisibility();
   renderChildren();
   showBoost("Ratolest přidána", `${name} je v odhadu. Můžete přidat další nebo pokračovat příjmy.`);
   nameInput.focus();
@@ -400,11 +428,13 @@ function calculateAndRender() {
 
   const roles = roleInfo();
   const kids = children();
+  const kidsForMeToOther = kids.filter((child) => child.shared || child.owner === "me");
+  const kidsForOtherToMe = kids.filter((child) => child.shared || child.owner === "other");
   const care = careSummary();
   const myIncome = valueOf("#myIncome", 0);
   const otherIncome = valueOf("#otherIncome", 0);
-  const meToOther = supportResult(kids, myIncome, care.monthlyMe);
-  const otherToMe = supportResult(kids, otherIncome, care.monthlyOther);
+  const meToOther = supportResult(kidsForMeToOther, myIncome, care.monthlyMe);
+  const otherToMe = supportResult(kidsForOtherToMe, otherIncome, care.monthlyOther);
   const mode = resultMode(care);
   const copy = directionCopy(mode, roles);
 
@@ -515,9 +545,13 @@ function renderChildResults(mode, otherToMe, meToOther, roles) {
 }
 
 function childResultCard(child, label) {
+  const roles = roleInfo();
+  const childScope = child.shared
+    ? "společná ratolest"
+    : (child.owner === "other" ? `patří jen ${roles.otherRole}` : `patří jen ${roles.myRole}`);
   return `
     <article class="child-result-card">
-      <small>${child.name}, ${child.age} let, tabulkově ${child.percentage} %</small>
+      <small>${child.name}, ${child.age} let, ${childScope}, tabulkově ${child.percentage} %</small>
       <strong>${kc.format(child.amount)}</strong>
       <span>${label}</span>
     </article>
@@ -676,8 +710,8 @@ function resetDemo() {
   $("#myIncome").value = 38000;
   $("#otherIncome").value = 56000;
   appState.children = [
-    { name: "Eliška", age: 7 },
-    { name: "Jakub", age: 12 }
+    { name: "Eliška", age: 7, shared: true, owner: "me" },
+    { name: "Jakub", age: 12, shared: true, owner: "me" }
   ];
   $("#regularDaysMe").value = 7;
   holidays.forEach((holiday) => {
@@ -692,18 +726,25 @@ function init() {
   loadNameSuggestions();
   renderChildren();
   renderHolidays();
+  updateQuickChildOwnerVisibility();
   updateRegularLabel();
   showWizardStep(0);
   calculateAndRender();
   appState.interactive = true;
 
   document.addEventListener("input", (event) => {
-    if (event.target.matches("#myIncome, #otherIncome, .child-name, .child-age, #calcYear")) {
-      if (event.target.matches(".child-name, .child-age")) {
+    if (event.target.matches("#myIncome, #otherIncome, .child-name, .child-age, .child-shared, .child-owner, #calcYear")) {
+      if (event.target.matches(".child-name, .child-age, .child-shared, .child-owner")) {
         const index = Number(event.target.dataset.childIndex);
         if (appState.children[index]) {
           if (event.target.matches(".child-name")) appState.children[index].name = normalizeChildName(event.target.value);
           if (event.target.matches(".child-age")) appState.children[index].age = clamp(Number(event.target.value) || 0, 0, 26);
+          if (event.target.matches(".child-shared")) appState.children[index].shared = event.target.checked;
+          if (event.target.matches(".child-owner")) appState.children[index].owner = event.target.value === "other" ? "other" : "me";
+          if (event.target.matches(".child-shared")) {
+            const ownerWrap = event.target.closest(".child-meta")?.querySelector(".child-owner-field");
+            if (ownerWrap) ownerWrap.hidden = event.target.checked;
+          }
           renderChildTags();
         }
       }
@@ -726,7 +767,10 @@ function init() {
   });
 
   $$("input[name='userRole']").forEach((input) => {
-    input.addEventListener("change", calculateAndRender);
+    input.addEventListener("change", () => {
+      renderChildren();
+      calculateAndRender();
+    });
   });
 
   $("#addChildBtn").addEventListener("click", addChildFromQuickStart);
@@ -746,6 +790,7 @@ function init() {
       addChildFromQuickStart();
     }
   });
+  $("#childIsSharedInput").addEventListener("change", updateQuickChildOwnerVisibility);
   $("#childTagList").addEventListener("click", (event) => {
     const button = event.target.closest("[data-remove-child]");
     if (!button) return;

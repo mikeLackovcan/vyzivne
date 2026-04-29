@@ -409,6 +409,31 @@ h3 {
   line-height: 1.45;
 }
 
+.child-relation-inline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.inline-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcff;
+  font-weight: 700;
+}
+
+.inline-check input {
+  width: 18px;
+  min-height: 18px;
+}
+
 .child-tags {
   display: flex;
   flex-wrap: wrap;
@@ -492,6 +517,17 @@ h3 {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fbfcff;
+}
+
+.child-meta {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 10px;
+}
+
+.child-owner-field select {
+  min-height: 44px;
 }
 
 .empty-children {
@@ -968,6 +1004,7 @@ h3 {
   .start-grid,
   .add-row,
   .role-grid,
+  .child-relation-inline,
   .money-grid,
   .two-col,
   .quick-presets,
@@ -977,6 +1014,10 @@ h3 {
   .child-row,
   .holiday-row,
   .quest-list {
+    grid-template-columns: 1fr;
+  }
+
+  .child-meta {
     grid-template-columns: 1fr;
   }
 

@@ -108,6 +108,19 @@
               <input id="childAgeInput" type="number" name="childQuickAge" min="0" max="26" placeholder="Věk" inputmode="numeric">
               <button id="addChildBtn" type="button">Přidat</button>
             </div>
+            <div class="child-relation-inline">
+              <label class="inline-check">
+                <input id="childIsSharedInput" type="checkbox" checked>
+                <span>Společná ratolest obou rodičů</span>
+              </label>
+              <label id="childOwnerWrap" hidden>
+                Patří pouze
+                <select id="childOwnerInput">
+                  <option value="me">mně</option>
+                  <option value="other">druhému rodiči</option>
+                </select>
+              </label>
+            </div>
             <datalist id="czechNameOptions"></datalist>
             <p class="microcopy">Našeptávání používá česká kalendářní jména. Přidat můžete až 3 ratolesti.</p>
             <div id="childTagList" class="child-tags" aria-live="polite"></div>
