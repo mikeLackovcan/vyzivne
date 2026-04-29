@@ -226,11 +226,24 @@ function applyCarePreset() {
   setCarePreset($("#careType").value);
 }
 
+function sliderAccentByValue(daysMe) {
+  const ratio = clamp(daysMe / 14, 0, 1);
+  const hue = Math.round(8 + (ratio * 122));
+  return `hsl(${hue} 62% 45%)`;
+}
+
+function paintCareSliders(daysMe) {
+  const color = sliderAccentByValue(daysMe);
+  $("#regularDaysMe").style.accentColor = color;
+  $("#quickCareDaysMe").style.accentColor = color;
+}
+
 function setCarePreset(careType) {
-  const days = careType === "mostlyMe" ? 10 : careType === "mostlyOther" ? 4 : 7;
-  const ratio = careType === "mostlyMe" ? 0.65 : careType === "mostlyOther" ? 0.35 : 0.5;
+  const days = careType === "mostlyMe" ? 12 : careType === "mostlyOther" ? 2 : 7;
+  const ratio = careType === "mostlyMe" ? 0.8 : careType === "mostlyOther" ? 0.2 : 0.5;
   $("#careType").value = careType;
   $("#regularDaysMe").value = days;
+  $("#quickCareDaysMe").value = days;
   holidays.forEach((holiday) => {
     holiday.ratio = ratio;
   });
@@ -244,8 +257,12 @@ function setCarePreset(careType) {
 
 function updateRegularLabel() {
   const daysMe = Number($("#regularDaysMe").value);
-  $("#regularDaysLabel").textContent =
-    `${num.format(daysMe)} dní u vás / ${num.format(14 - daysMe)} dní u druhého rodiče`;
+  const daysOther = 14 - daysMe;
+  $("#regularMyDays").textContent = `${num.format(daysMe)} dní`;
+  $("#regularOtherDays").textContent = `${num.format(daysOther)} dní`;
+  $("#quickMyDays").textContent = `${num.format(daysMe)} dní`;
+  $("#quickOtherDays").textContent = `${num.format(daysOther)} dní`;
+  paintCareSliders(daysMe);
   updateCareReview();
 }
 
@@ -451,7 +468,7 @@ function renderPaymentSummary(mode, otherToMe, meToOther, roles) {
       <strong>${mode === "twoWay" ? "2 směry" : "1 směr"}</strong>
       <p>${mode === "twoWay"
         ? "Ve společné nebo střídavé péči má smysl vidět oba směry samostatně. Nejde o automatické započtení."
-        : "U převážné nebo výlučné péče ukazujeme jen směr, který odpovídá tomu, kde ratolesti hlavně jsou."}</p>
+        : "U výlučné péče ukazujeme jen směr, který odpovídá tomu, kde ratolesti hlavně jsou."}</p>
     </article>
   `;
 
@@ -565,6 +582,10 @@ function updateMomentum() {
   const { quests, score } = gamificationStatus();
   $("#clarityScore").textContent = `${score} %`;
   $(".score-ring").style.setProperty("--score", `${score * 3.6}deg`);
+  $("#calmLevel").textContent =
+    score >= 100 ? "Mistr přehledu" :
+      score >= 75 ? "Strateg rodiče" :
+        score >= 45 ? "Rozběhnuto" : "Nováček";
 
   Object.entries(quests).forEach(([key, done]) => {
     const item = $(`.quest-item[data-quest="${key}"]`);
@@ -689,6 +710,12 @@ function init() {
       calculateAndRender();
     }
     if (event.target.matches("#regularDaysMe")) {
+      $("#quickCareDaysMe").value = event.target.value;
+      updateRegularLabel();
+      calculateAndRender();
+    }
+    if (event.target.matches("#quickCareDaysMe")) {
+      $("#regularDaysMe").value = event.target.value;
       updateRegularLabel();
       calculateAndRender();
     }

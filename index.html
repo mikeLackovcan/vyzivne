@@ -120,6 +120,10 @@
           <p class="eyebrow">Přehled</p>
           <h2 id="momentumTitle">Jak úplný je váš odhad</h2>
           <p id="boostMessage">Začněte základními údaji. Každý doplněný krok pomáhá udělat výsledek srozumitelnější.</p>
+          <div class="game-level">
+            <small>Level klidu</small>
+            <strong id="calmLevel">Nováček</strong>
+          </div>
         </div>
         <div class="score-ring" aria-label="Míra vyplnění">
           <span id="clarityScore">0 %</span>
@@ -177,9 +181,24 @@
           </div>
 
           <div class="quick-presets" aria-label="Rychlá volba péče">
-            <button type="button" class="preset-chip is-active" data-care-preset="shared">Půl na půl</button>
-            <button type="button" class="preset-chip" data-care-preset="mostlyMe">Většinou u mě</button>
-            <button type="button" class="preset-chip" data-care-preset="mostlyOther">Většinou u druhého</button>
+            <button type="button" class="preset-chip is-active" data-care-preset="shared">Společná / střídavá péče</button>
+            <button type="button" class="preset-chip" data-care-preset="mostlyMe">Výlučná péče u mě</button>
+            <button type="button" class="preset-chip" data-care-preset="mostlyOther">Výlučná péče u druhého rodiče</button>
+          </div>
+
+          <div class="quick-care-slider">
+            <label for="quickCareDaysMe">Běžná péče: dny u mě ve 14denním cyklu</label>
+            <input id="quickCareDaysMe" type="range" min="0" max="14" step="0.5" value="7">
+            <div class="regular-split" id="quickRegularLabel">
+              <div>
+                <small>U mě</small>
+                <strong id="quickMyDays">7 dní</strong>
+              </div>
+              <div>
+                <small>U druhého rodiče</small>
+                <strong id="quickOtherDays">7 dní</strong>
+              </div>
+            </div>
           </div>
 
           <div class="care-summary">
@@ -199,7 +218,8 @@
             <div id="myCareFill"></div>
           </div>
 
-          <button id="openWizard" type="button" class="wide">Nastavit péči a prázdniny</button>
+          <p class="helper-callout">Pokud to nemáte přesně, spusťte pomůcku pro detailní rozpad péče.</p>
+          <button id="openWizard" type="button" class="wide">Nevím přesně, chci spustit pomůcku</button>
         </aside>
       </section>
 
@@ -231,21 +251,21 @@
         </div>
 
         <div class="modal-steps" aria-label="Kroky detailního nastavení">
-          <button class="step-dot is-active" type="button" data-wizard-step="0">1</button>
-          <button class="step-dot" type="button" data-wizard-step="1">2</button>
-          <button class="step-dot" type="button" data-wizard-step="2">3</button>
+          <button class="step-dot is-active" type="button" data-wizard-step="0"><span>1</span><small>Běžná péče</small></button>
+          <button class="step-dot" type="button" data-wizard-step="1"><span>2</span><small>Prázdninová péče</small></button>
+          <button class="step-dot" type="button" data-wizard-step="2"><span>3</span><small>Kontrola</small></button>
         </div>
 
         <form id="careForm">
           <section class="wizard-step is-active" data-step="0">
-            <h3>Jaký je běžný režim přes školní rok?</h3>
+            <h3>1/3 Běžná péče přes školní rok</h3>
             <div class="two-col">
               <label>
                 Typ péče
                 <select id="careType">
                   <option value="shared">Společná nebo střídavá péče</option>
-                  <option value="mostlyMe">Převážná nebo výlučná péče u mě</option>
-                  <option value="mostlyOther">Převážná nebo výlučná péče u druhého rodiče</option>
+                  <option value="mostlyMe">Výlučná péče u mě</option>
+                  <option value="mostlyOther">Výlučná péče u druhého rodiče</option>
                 </select>
               </label>
               <label>
@@ -256,18 +276,27 @@
             <div class="slider-card">
               <label for="regularDaysMe">Běžný režim: dní u vás ve 14denním cyklu</label>
               <input id="regularDaysMe" type="range" min="0" max="14" step="0.5" value="7">
-              <output id="regularDaysLabel">7 dní u vás / 7 dní u druhého rodiče</output>
+              <div class="regular-split" id="regularDaysLabel">
+                <div>
+                  <small>U mě</small>
+                  <strong id="regularMyDays">7 dní</strong>
+                </div>
+                <div>
+                  <small>U druhého rodiče</small>
+                  <strong id="regularOtherDays">7 dní</strong>
+                </div>
+              </div>
             </div>
           </section>
 
           <section class="wizard-step" data-step="1">
-            <h3>Jak si dělíte prázdniny?</h3>
+            <h3>2/3 Prázdninová péče</h3>
             <p class="subtle">Zadejte, kolik dní z daného období jsou ratolesti u vás. Zbytek se započte druhému rodiči.</p>
             <div id="holidayWrap" class="holiday-list"></div>
           </section>
 
           <section class="wizard-step" data-step="2">
-            <h3>Kontrola péče</h3>
+            <h3>3/3 Kontrola a finální přepočet</h3>
             <div class="modal-review">
               <div>
                 <small id="reviewMeLabel">Vy</small>
