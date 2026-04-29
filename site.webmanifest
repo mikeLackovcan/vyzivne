@@ -1,0 +1,15 @@
+{
+  "name": "Vyzivne.cz",
+  "short_name": "Vyzivne.cz",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F2F8F6",
+  "theme_color": "#7DAEA4",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
