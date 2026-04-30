@@ -6,8 +6,17 @@
     <title>Vyzivne.cz | Klidná kalkulačka výživného</title>
     <meta name="description" content="Klidná orientační kalkulačka výživného pro rodiče v Česku. Rychlý odhad podle příjmů, věku ratolestí a rozdělení péče během roku i prázdnin.">
     <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="theme-color" content="#7DAEA4">
+    <meta name="author" content="Vyzivne.cz">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="format-detection" content="telephone=no">
     <link rel="canonical" href="https://vyzivne.vercel.app/">
+    <link rel="alternate" hreflang="cs-CZ" href="https://vyzivne.vercel.app/">
+    <link rel="alternate" hreflang="x-default" href="https://vyzivne.vercel.app/">
+
+    <meta name="google-site-verification" content="REPLACE_WITH_GOOGLE_VERIFICATION_TOKEN">
+    <meta name="seznam-wmt" content="REPLACE_WITH_SEZNAM_VERIFICATION_TOKEN">
 
     <meta property="og:type" content="website">
     <meta property="og:locale" content="cs_CZ">
@@ -19,6 +28,7 @@
     <meta property="og:image:type" content="image/svg+xml">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Vyzivne.cz - klidná orientační kalkulačka výživného pro rodiče">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Vyzivne.cz | Klidná kalkulačka výživného">
@@ -31,18 +41,51 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Vyzivne.cz",
-        "url": "https://vyzivne.vercel.app/",
-        "applicationCategory": "FinanceApplication",
-        "operatingSystem": "Web",
-        "inLanguage": "cs-CZ",
-        "description": "Klidná orientační kalkulačka výživného pro rodiče v Česku.",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "CZK"
-        }
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://vyzivne.vercel.app/#org",
+            "name": "Vyzivne.cz",
+            "url": "https://vyzivne.vercel.app/",
+            "logo": "https://vyzivne.vercel.app/favicon.svg"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://vyzivne.vercel.app/#website",
+            "url": "https://vyzivne.vercel.app/",
+            "name": "Vyzivne.cz",
+            "inLanguage": "cs-CZ",
+            "publisher": {
+              "@id": "https://vyzivne.vercel.app/#org"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://vyzivne.vercel.app/#webpage",
+            "url": "https://vyzivne.vercel.app/",
+            "name": "Vyzivne.cz | Klidná kalkulačka výživného",
+            "description": "Klidná orientační kalkulačka výživného pro rodiče v Česku.",
+            "isPartOf": {
+              "@id": "https://vyzivne.vercel.app/#website"
+            },
+            "inLanguage": "cs-CZ"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://vyzivne.vercel.app/#app",
+            "name": "Vyzivne.cz",
+            "url": "https://vyzivne.vercel.app/",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "cs-CZ",
+            "description": "Klidná orientační kalkulačka výživného pro rodiče v Česku.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "CZK"
+            }
+          }
+        ]
       }
     </script>
     <link rel="stylesheet" href="styles.css">
