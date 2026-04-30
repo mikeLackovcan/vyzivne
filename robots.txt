@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vyzivne.vercel.app/sitemap.xml
+Sitemap: https://vyzivne.eu/sitemap.xml
