@@ -82,6 +82,45 @@ function roleInfo() {
   };
 }
 
+function getChildScope(child) {
+  if (child.shared === false && child.owner === "other") return "other";
+  if (child.shared === false) return "mine";
+  return "shared";
+}
+
+function setChildScope(child, scope) {
+  if (scope === "other") {
+    child.shared = false;
+    child.owner = "other";
+    return;
+  }
+  if (scope === "mine") {
+    child.shared = false;
+    child.owner = "me";
+    return;
+  }
+  child.shared = true;
+  child.owner = "me";
+}
+
+function updateQuickScope(scope) {
+  $("#childScopeShared").checked = scope === "shared";
+  $("#childScopeMine").checked = scope === "mine";
+  $("#childScopeOther").checked = scope === "other";
+}
+
+function quickScopeValue() {
+  if ($("#childScopeMine").checked) return "mine";
+  if ($("#childScopeOther").checked) return "other";
+  return "shared";
+}
+
+function enforceSingleScopeIn(group, selectedScope) {
+  group.querySelectorAll("input[type='checkbox']").forEach((input) => {
+    input.checked = input.dataset.scope === selectedScope;
+  });
+}
+
 function renderChildren() {
   $("#childrenWrap").innerHTML = "";
 
@@ -93,8 +132,7 @@ function renderChildren() {
   }
 
   appState.children.forEach((child, index) => {
-    const shared = child.shared !== false;
-    const owner = child.owner === "other" ? "other" : "me";
+    const scope = getChildScope(child);
     const roles = roleInfo();
     const rowTitle = child.name?.trim() ? child.name.trim() : `Ratolest ${index + 1}`;
     const row = document.createElement("div");
@@ -109,17 +147,21 @@ function renderChildren() {
         <input class="child-age" data-child-index="${index}" type="number" name="childAge${index}" min="0" max="26" value="${escapeHtml(child.age)}">
       </label>
       <div class="child-meta">
-        <label class="inline-check">
-          <input class="child-shared" data-child-index="${index}" type="checkbox" ${shared ? "checked" : ""}>
-          <span>Společná ratolest obou rodičů</span>
-        </label>
-        <label class="child-owner-field" ${shared ? "hidden" : ""}>
-          Patří pouze
-          <select class="child-owner" data-child-index="${index}">
-            <option value="me" ${owner === "me" ? "selected" : ""}>${roles.myRole}</option>
-            <option value="other" ${owner === "other" ? "selected" : ""}>${roles.otherRole}</option>
-          </select>
-        </label>
+        <label>Typ ratolesti</label>
+        <div class="scope-group row-scope-group" data-child-index="${index}">
+          <label class="scope-option">
+            <input class="child-scope" data-child-index="${index}" data-scope="shared" type="checkbox" ${scope === "shared" ? "checked" : ""}>
+            <span>Společná</span>
+          </label>
+          <label class="scope-option">
+            <input class="child-scope" data-child-index="${index}" data-scope="mine" type="checkbox" ${scope === "mine" ? "checked" : ""}>
+            <span>Jen ${roles.myRole}</span>
+          </label>
+          <label class="scope-option">
+            <input class="child-scope" data-child-index="${index}" data-scope="other" type="checkbox" ${scope === "other" ? "checked" : ""}>
+            <span>Jen ${roles.otherRole}</span>
+          </label>
+        </div>
       </div>
     `;
     $("#childrenWrap").appendChild(row);
@@ -165,15 +207,10 @@ function renderChildTags() {
   const roles = roleInfo();
   $("#childTagList").innerHTML = appState.children.map((child, index) => `
     <span class="child-tag">
-      ${escapeHtml(child.name)}${child.age ? `, ${escapeHtml(child.age)} let` : ""} • ${child.shared !== false ? "společná" : `jen ${child.owner === "other" ? roles.otherRole : roles.myRole}`}
+      ${escapeHtml(child.name)}${child.age ? `, ${escapeHtml(child.age)} let` : ""} • ${getChildScope(child) === "shared" ? "společná" : `jen ${getChildScope(child) === "other" ? roles.otherRole : roles.myRole}`}
       <button type="button" aria-label="Odebrat ${escapeHtml(child.name)}" data-remove-child="${index}">×</button>
     </span>
   `).join("");
-}
-
-function updateQuickChildOwnerVisibility() {
-  const shared = $("#childIsSharedInput").checked;
-  $("#childOwnerWrap").hidden = shared;
 }
 
 function addChildFromQuickStart() {
@@ -181,8 +218,7 @@ function addChildFromQuickStart() {
   const ageInput = $("#childAgeInput");
   const name = normalizeChildName(nameInput.value);
   const age = Number(ageInput.value);
-  const shared = $("#childIsSharedInput").checked;
-  const owner = $("#childOwnerInput").value === "other" ? "other" : "me";
+  const scope = quickScopeValue();
 
   if (!name || !Number.isFinite(age) || age < 0) {
     showBoost("Doplňte jméno a věk", "Aby výpočet dával smysl, potřebujeme u ratolesti jméno i věk.");
@@ -197,11 +233,12 @@ function addChildFromQuickStart() {
     return;
   }
 
-  appState.children.push({ name, age: clamp(age, 0, 26), shared, owner });
+  const created = { name, age: clamp(age, 0, 26), shared: true, owner: "me" };
+  setChildScope(created, scope);
+  appState.children.push(created);
   nameInput.value = "";
   ageInput.value = "";
-  $("#childIsSharedInput").checked = true;
-  updateQuickChildOwnerVisibility();
+  updateQuickScope("shared");
   renderChildren();
   showBoost("Ratolest přidána", `${name} je v odhadu. Můžete přidat další nebo pokračovat příjmy.`);
   nameInput.focus();
@@ -546,9 +583,10 @@ function renderChildResults(mode, otherToMe, meToOther, roles) {
 
 function childResultCard(child, label) {
   const roles = roleInfo();
-  const childScope = child.shared
+  const scope = getChildScope(child);
+  const childScope = scope === "shared"
     ? "společná ratolest"
-    : (child.owner === "other" ? `patří jen ${roles.otherRole}` : `patří jen ${roles.myRole}`);
+    : (scope === "other" ? `patří jen ${roles.otherRole}` : `patří jen ${roles.myRole}`);
   return `
     <article class="child-result-card">
       <small>${child.name}, ${child.age} let, ${childScope}, tabulkově ${child.percentage} %</small>
@@ -726,24 +764,24 @@ function init() {
   loadNameSuggestions();
   renderChildren();
   renderHolidays();
-  updateQuickChildOwnerVisibility();
+  updateQuickScope("shared");
   updateRegularLabel();
   showWizardStep(0);
   calculateAndRender();
   appState.interactive = true;
 
   document.addEventListener("input", (event) => {
-    if (event.target.matches("#myIncome, #otherIncome, .child-name, .child-age, .child-shared, .child-owner, #calcYear")) {
-      if (event.target.matches(".child-name, .child-age, .child-shared, .child-owner")) {
+    if (event.target.matches("#myIncome, #otherIncome, .child-name, .child-age, .child-scope, #calcYear")) {
+      if (event.target.matches(".child-name, .child-age, .child-scope")) {
         const index = Number(event.target.dataset.childIndex);
         if (appState.children[index]) {
           if (event.target.matches(".child-name")) appState.children[index].name = normalizeChildName(event.target.value);
           if (event.target.matches(".child-age")) appState.children[index].age = clamp(Number(event.target.value) || 0, 0, 26);
-          if (event.target.matches(".child-shared")) appState.children[index].shared = event.target.checked;
-          if (event.target.matches(".child-owner")) appState.children[index].owner = event.target.value === "other" ? "other" : "me";
-          if (event.target.matches(".child-shared")) {
-            const ownerWrap = event.target.closest(".child-meta")?.querySelector(".child-owner-field");
-            if (ownerWrap) ownerWrap.hidden = event.target.checked;
+          if (event.target.matches(".child-scope")) {
+            const scope = event.target.dataset.scope || "shared";
+            setChildScope(appState.children[index], scope);
+            const scopeGroup = event.target.closest(".scope-group");
+            if (scopeGroup) enforceSingleScopeIn(scopeGroup, scope);
           }
           renderChildTags();
         }
@@ -790,7 +828,14 @@ function init() {
       addChildFromQuickStart();
     }
   });
-  $("#childIsSharedInput").addEventListener("change", updateQuickChildOwnerVisibility);
+  ["childScopeShared", "childScopeMine", "childScopeOther"].forEach((id) => {
+    $(`#${id}`).addEventListener("change", (event) => {
+      if (!event.target.checked) {
+        event.target.checked = true;
+      }
+      updateQuickScope(id === "childScopeMine" ? "mine" : id === "childScopeOther" ? "other" : "shared");
+    });
+  });
   $("#childTagList").addEventListener("click", (event) => {
     const button = event.target.closest("[data-remove-child]");
     if (!button) return;

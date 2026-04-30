@@ -108,17 +108,18 @@
               <input id="childAgeInput" type="number" name="childQuickAge" min="0" max="26" placeholder="Věk" inputmode="numeric">
               <button id="addChildBtn" type="button">Přidat</button>
             </div>
-            <div class="child-relation-inline">
-              <label class="inline-check">
-                <input id="childIsSharedInput" type="checkbox" checked>
-                <span>Společná ratolest obou rodičů</span>
+            <div class="scope-group" aria-label="Typ ratolesti">
+              <label class="scope-option">
+                <input id="childScopeShared" type="checkbox" checked>
+                <span>Společná</span>
               </label>
-              <label id="childOwnerWrap" hidden>
-                Patří pouze
-                <select id="childOwnerInput">
-                  <option value="me">mně</option>
-                  <option value="other">druhému rodiči</option>
-                </select>
+              <label class="scope-option">
+                <input id="childScopeMine" type="checkbox">
+                <span>Jen moje</span>
+              </label>
+              <label class="scope-option">
+                <input id="childScopeOther" type="checkbox">
+                <span>Jen druhého rodiče</span>
               </label>
             </div>
             <datalist id="czechNameOptions"></datalist>
