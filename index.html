@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Vyzivne.cz | Klidná kalkulačka výživného</title>
+    <title>Rodičovský Kompas | Klidná kalkulačka výživného</title>
     <meta name="description" content="Klidná orientační kalkulačka výživného pro rodiče v Česku. Rychlý odhad podle příjmů, věku ratolestí a rozdělení péče během roku i prázdnin.">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="theme-color" content="#7DAEA4">
-    <meta name="author" content="Vyzivne.cz">
+    <meta name="author" content="Rodičovský Kompas">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="format-detection" content="telephone=no">
     <link rel="canonical" href="https://vyzivne.vercel.app/">
@@ -20,18 +20,18 @@
 
     <meta property="og:type" content="website">
     <meta property="og:locale" content="cs_CZ">
-    <meta property="og:site_name" content="Vyzivne.cz">
-    <meta property="og:title" content="Vyzivne.cz | Klidná kalkulačka výživného">
+    <meta property="og:site_name" content="Rodičovský Kompas">
+    <meta property="og:title" content="Rodičovský Kompas | Klidná kalkulačka výživného">
     <meta property="og:description" content="Rychlý orientační odhad výživného pro rodiče v Česku. Přehledně podle příjmů, věku ratolestí a péče včetně prázdnin.">
     <meta property="og:url" content="https://vyzivne.vercel.app/">
     <meta property="og:image" content="https://vyzivne.vercel.app/og-image.svg">
     <meta property="og:image:type" content="image/svg+xml">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Vyzivne.cz - klidná orientační kalkulačka výživného pro rodiče">
+    <meta property="og:image:alt" content="Rodičovský Kompas - klidná orientační kalkulačka výživného pro rodiče">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Vyzivne.cz | Klidná kalkulačka výživného">
+    <meta name="twitter:title" content="Rodičovský Kompas | Klidná kalkulačka výživného">
     <meta name="twitter:description" content="Orientační kalkulačka výživného pro rodiče v Česku.">
     <meta name="twitter:image" content="https://vyzivne.vercel.app/og-image.svg">
 
@@ -45,7 +45,7 @@
           {
             "@type": "Organization",
             "@id": "https://vyzivne.vercel.app/#org",
-            "name": "Vyzivne.cz",
+            "name": "Rodičovský Kompas",
             "url": "https://vyzivne.vercel.app/",
             "logo": "https://vyzivne.vercel.app/favicon.svg"
           },
@@ -53,7 +53,7 @@
             "@type": "WebSite",
             "@id": "https://vyzivne.vercel.app/#website",
             "url": "https://vyzivne.vercel.app/",
-            "name": "Vyzivne.cz",
+            "name": "Rodičovský Kompas",
             "inLanguage": "cs-CZ",
             "publisher": {
               "@id": "https://vyzivne.vercel.app/#org"
@@ -63,7 +63,7 @@
             "@type": "WebPage",
             "@id": "https://vyzivne.vercel.app/#webpage",
             "url": "https://vyzivne.vercel.app/",
-            "name": "Vyzivne.cz | Klidná kalkulačka výživného",
+            "name": "Rodičovský Kompas | Klidná kalkulačka výživného",
             "description": "Klidná orientační kalkulačka výživného pro rodiče v Česku.",
             "isPartOf": {
               "@id": "https://vyzivne.vercel.app/#website"
@@ -73,7 +73,7 @@
           {
             "@type": "WebApplication",
             "@id": "https://vyzivne.vercel.app/#app",
-            "name": "Vyzivne.cz",
+            "name": "Rodičovský Kompas",
             "url": "https://vyzivne.vercel.app/",
             "applicationCategory": "FinanceApplication",
             "operatingSystem": "Web",
@@ -88,24 +88,29 @@
         ]
       }
     </script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=2">
   </head>
   <body>
     <main class="app-shell">
       <header class="brand-header" aria-label="Název aplikace">
         <svg class="brand-logo" viewBox="0 0 64 64" aria-hidden="true">
           <defs>
-            <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#7DAEA4"></stop>
-              <stop offset="100%" stop-color="#6F89A8"></stop>
+            <linearGradient id="compassGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#1e3a5f"></stop>
+              <stop offset="100%" stop-color="#33b8a5"></stop>
             </linearGradient>
+            <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#1e3a5f" flood-opacity="0.3"/>
+            </filter>
           </defs>
-          <rect x="6" y="6" width="52" height="52" rx="14" fill="url(#brandGradient)"></rect>
-          <path d="M20 24L32 40L44 24" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <rect x="6" y="6" width="52" height="52" rx="26" fill="url(#compassGrad)" filter="url(#logoGlow)"></rect>
+          <path d="M44 20 L28 28 L36 36 Z" fill="#ffffff"></path>
+          <path d="M20 44 L28 28 L36 36 Z" fill="rgba(255,255,255,0.4)"></path>
+          <circle cx="32" cy="32" r="3" fill="#1e3a5f"></circle>
         </svg>
         <div class="brand-text">
-          <strong>VYZIVNE.CZ</strong>
-          <span>Klidná orientační kalkulačka výživného</span>
+          <strong>RODIČOVSKÝ KOMPAS</strong>
+          <span>Klidná orientační kalkulačka <span class="domain-badge">vyzivne.eu</span></span>
         </div>
       </header>
 
@@ -165,6 +170,7 @@
                 <span>Jen druhého rodiče</span>
               </label>
             </div>
+            <p class="microcopy" style="margin-top: 0.5rem; margin-bottom: 0.75rem; color: #4E6174; line-height: 1.4;">Když ratolest není společná, ovlivňuje to jen vyživovací povinnost u rodiče, kterého je (přičítá se mu jako další vyživovací povinnost).</p>
             <datalist id="czechNameOptions"></datalist>
             <p class="microcopy">Našeptávání používá česká kalendářní jména. Přidat můžete až 3 ratolesti.</p>
             <div id="childTagList" class="child-tags" aria-live="polite"></div>
@@ -295,6 +301,57 @@
 
         <p class="legal-note">Výpočet je orientační a vychází z veřejné kalkulačky Ministerstva spravedlnosti. Soud může zohlednit další okolnosti: konkrétní potřeby dětí, majetek, bydlení, zdravotní výdaje, školu nebo další vyživovací povinnosti.</p>
       </section>
+
+      <section class="quick-card table-panel">
+        <div class="section-head">
+          <p class="eyebrow">Doplňující informace</p>
+          <h2>Tabulka procentuálních podílů</h2>
+          <p>Kalkulačka používá doporučené hodnoty Ministerstva spravedlnosti. Procento z čistého příjmu klesá s rostoucím počtem vyživovacích povinností rodiče.</p>
+        </div>
+        <div class="table-responsive">
+          <table class="percentage-table">
+            <thead>
+              <tr>
+                <th>Věk ratolesti</th>
+                <th>1 povinnost</th>
+                <th>2 povinnosti</th>
+                <th>3 povinnosti</th>
+                <th>4 a více</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0–5 let</td>
+                <td>14 %</td>
+                <td>12 %</td>
+                <td>10 %</td>
+                <td>8 %</td>
+              </tr>
+              <tr>
+                <td>6–10 let</td>
+                <td>16 %</td>
+                <td>14 %</td>
+                <td>12 %</td>
+                <td>10 %</td>
+              </tr>
+              <tr>
+                <td>11–15 let</td>
+                <td>18 %</td>
+                <td>16 %</td>
+                <td>14 %</td>
+                <td>12 %</td>
+              </tr>
+              <tr>
+                <td>16 a více let</td>
+                <td>20 %</td>
+                <td>18 %</td>
+                <td>16 %</td>
+                <td>14 %</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </main>
 
     <div id="wizardOverlay" class="modal-overlay" hidden>
@@ -382,7 +439,30 @@
       <strong id="boostTitle">Hotovo</strong>
       <span id="boostText">Výsledek je zase o něco jasnější.</span>
     </div>
-    <div id="confettiLayer" class="confetti-layer" aria-hidden="true"></div>
+    <div class="feedback-widget">
+      <div id="feedbackPopover" class="feedback-popover">
+        <div class="feedback-header">
+          <strong>Zpětná vazba</strong>
+          <button id="feedbackClose" class="icon-button" aria-label="Zavřít">×</button>
+        </div>
+        <div class="feedback-body">
+          <p>Máte nápad na zlepšení nebo jste objevili chybu? Napište nám (klidně anonymně).</p>
+          <form id="feedbackForm" action="https://formspree.io/f/xjglvarb" method="POST">
+            <textarea name="message" placeholder="Váš nápad, připomínka nebo chyba..." required></textarea>
+            <input type="email" name="email" placeholder="Váš e-mail (volitelné, pro odpověď)">
+            <button type="submit" class="feedback-submit">Odeslat anonymně</button>
+          </form>
+          <div id="feedbackSuccess" hidden>
+            Děkujeme za zpětnou vazbu!
+          </div>
+        </div>
+      </div>
+      <button id="feedbackToggle" class="feedback-button" aria-label="Zpětná vazba" aria-expanded="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+        </svg>
+      </button>
+    </div>
 
     <script src="app.js"></script>
   </body>

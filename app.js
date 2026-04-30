@@ -422,13 +422,16 @@ function supportResult(kids, income, careDaysWithPayerPerMonth) {
   const controlAmount = income * controlPercent;
   const afterControl = Math.min(orientationalAmount, controlAmount);
   const distributable = Math.min(afterControl, preliminarySum);
-  const perChild = shares.map((share, index) => ({
+  const allPerChild = shares.map((share, index) => ({
     ...kids[index],
     percentage: percentages[index],
     amount: distributable * share
   }));
 
-  return { distributable, perChild };
+  const payableChildren = allPerChild.filter(c => c.shared);
+  const payableDistributable = payableChildren.reduce((sum, c) => sum + c.amount, 0);
+
+  return { distributable: payableDistributable, perChild: payableChildren };
 }
 
 function resultMode(care) {
@@ -884,6 +887,70 @@ function init() {
       event.target.select();
     }
   });
+
+  // Feedback Widget Logic
+  const feedbackToggle = $("#feedbackToggle");
+  const feedbackPopover = $("#feedbackPopover");
+  const feedbackClose = $("#feedbackClose");
+  const feedbackForm = $("#feedbackForm");
+  const feedbackSuccess = $("#feedbackSuccess");
+
+  if (feedbackToggle && feedbackPopover && feedbackClose) {
+    feedbackToggle.addEventListener("click", () => {
+      const isHidden = feedbackPopover.hidden;
+      feedbackPopover.hidden = !isHidden;
+      feedbackToggle.setAttribute("aria-expanded", !isHidden);
+    });
+
+    feedbackClose.addEventListener("click", () => {
+      feedbackPopover.hidden = true;
+      feedbackToggle.setAttribute("aria-expanded", "false");
+    });
+
+    if (feedbackForm) {
+      feedbackForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const action = feedbackForm.getAttribute("action");
+        if (action.includes("ZDE_ZADEJTE_SVUJ_KOD")) {
+          // Ukázkové (fake) odeslání, pokud ještě není napojen formspree
+          feedbackForm.hidden = true;
+          feedbackSuccess.hidden = false;
+          setTimeout(() => {
+            feedbackPopover.hidden = true;
+            feedbackForm.hidden = false;
+            feedbackSuccess.hidden = true;
+            feedbackForm.reset();
+            feedbackToggle.setAttribute("aria-expanded", "false");
+          }, 3500);
+          return;
+        }
+
+        try {
+          const response = await fetch(action, {
+            method: "POST",
+            body: new FormData(feedbackForm),
+            headers: { 'Accept': 'application/json' }
+          });
+          if (response.ok) {
+            feedbackForm.hidden = true;
+            feedbackSuccess.hidden = false;
+            setTimeout(() => {
+              feedbackPopover.hidden = true;
+              feedbackForm.hidden = false;
+              feedbackSuccess.hidden = true;
+              feedbackForm.reset();
+              feedbackToggle.setAttribute("aria-expanded", "false");
+            }, 3500);
+          } else {
+            alert("Něco se pokazilo. Zkuste to prosím znovu.");
+          }
+        } catch (error) {
+          alert("Něco se pokazilo. Zkuste to prosím znovu.");
+        }
+      });
+    }
+  }
 }
 
 init();

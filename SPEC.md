@@ -1,8 +1,8 @@
-# SPEC.md - Vyzivne.cz
+# SPEC.md - Rodičovský Kompas
 
 ## 1) Project Summary
 
-**Vyzivne.cz** is a calm, mobile-first web calculator for Czech parents to get an **orientational child-support estimate**.
+**Rodičovský Kompas** is a calm, mobile-first web calculator for Czech parents to get an **orientational child-support estimate**.
 It is designed for stressful life situations (separation/divorce), with a strong focus on clarity, speed, and low cognitive load.
 
 The product is intentionally not legal advice; it is a guided estimate tool inspired by the public Czech justice calculator logic.

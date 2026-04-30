@@ -1,4 +1,4 @@
-# Vyzivne.cz
+# Rodičovský Kompas
 
 Calm, step-by-step Czech child-support estimator focused on low-stress form completion for parents.
 
