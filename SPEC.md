@@ -112,7 +112,9 @@ The product is intentionally not legal advice; it is a guided estimate tool insp
 
 - Stack: vanilla HTML/CSS/JS.
 - Main files:
-  - `index.html`
+  - `index.html` (Main calculator)
+  - `clanky.html` (Blog index)
+  - `clanek-*.html` (10 SEO-optimized blog posts)
   - `styles.css`
   - `app.js`
   - `czech-names.json`
@@ -134,20 +136,27 @@ The product is intentionally not legal advice; it is a guided estimate tool insp
 - ARIA live updates for key result and progress areas.
 - Reduced-motion respect for celebratory effects.
 
-## 11) Non-Goals (current scope)
+## 11) SEO & Content Strategy
+
+- Implementation of a blog / articles section focusing on **Conflict Resolution** and psychological well-being of the child.
+- Included 10 comprehensive SEO-optimized articles addressing child support, mediation, and impact of separation.
+- `JSON-LD`, proper meta tags, dynamic `sitemap.xml`, `robots.txt`, and Vercel Analytics integrated.
+- Floating feedback widget implemented (submits via Formspree).
+
+## 12) Non-Goals (current scope)
 
 - No legal verdict or court decision prediction.
 - No user account/auth.
 - No server-side data storage.
 - No official API integration guaranteed yet.
 
-## 12) Deployment & Repository
+## 13) Deployment & Repository
 
 - Project is static and deployable to GitHub + Vercel.
 - Local run uses static hosting on `127.0.0.1:4173`.
-- Git history already includes UX redesign and logic updates.
+- Git history already includes UX redesign, branding, and logic updates.
 
-## 13) Acceptance Criteria
+## 14) Acceptance Criteria
 
 1. User can complete core inputs and see result in under 3 minutes.
 2. Role is asked once at start, not repeatedly in later sections.
@@ -156,7 +165,7 @@ The product is intentionally not legal advice; it is a guided estimate tool insp
 5. In mostly exclusive care, result highlights one relevant direction.
 6. UI remains calm, readable, and responsive on mobile.
 
-## 14) Next Recommended Enhancements
+## 15) Next Recommended Enhancements
 
 - Add explicit onboarding stepper ("1/4, 2/4...") with autosave in local storage.
 - Add optional "quick estimate" vs "detailed estimate" mode switch.

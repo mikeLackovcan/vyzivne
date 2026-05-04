@@ -1,9 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
   <url>
     <loc>https://vyzivne.eu/</loc>
     <lastmod>2026-05-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanky.html</loc>
+    <lastmod>2026-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanek-1-vypocet-vyzivneho.html</loc>
+    <lastmod>2026-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanek-10-stridava-pece.html</loc>
+    <lastmod>2026-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanek-2-conflict-resolution.html</loc>
+    <lastmod>2026-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanek-3-dite-na-prvnim-miste.html</loc>
+    <lastmod>2026-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanek-4-zabavovani-ridicaku-nefunguje.html</loc>
+    <lastmod>2026-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanek-5-mimosoudni-dohoda.html</loc>
+    <lastmod>2026-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanek-6-mimoradne-vydaje.html</loc>
+    <lastmod>2026-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanek-7-nova-rodina-a-deti.html</loc>
+    <lastmod>2026-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanek-8-plnoletost.html</loc>
+    <lastmod>2026-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://vyzivne.eu/clanek-9-kdyz-druhy-rodic-neplati.html</loc>
+    <lastmod>2026-05-01</lastmod>
   </url>
 </urlset>
